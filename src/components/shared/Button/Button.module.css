@@ -1,0 +1,64 @@
+.CustomButton {
+    display: flex;
+    flex: 1 auto;
+    justify-content: flex-end;
+    
+    > button {
+        border-radius: 50%;
+        color: #FFF;
+        border: none;
+        display: flex;
+        align-items: center; 
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .previewButton, .editButton {
+        background-color: #1D527E;
+    }
+      
+    .previewButton:hover, .editButton:hover {
+        background-color: #0d395e;
+    }
+      
+    .previewButton:disabled, .editButton:disabled {
+        background-color: #1d527e6e;
+    }
+
+    .resetButton, .editButton {
+        background-color: #1D527E;
+    }
+      
+    .resetButton:hover, .editButton:hover {
+        background-color: #0d395e;
+    }
+      
+    .resetButton:disabled, .editButton:disabled {
+        background-color: #1d527e6e;
+    }
+
+    .saveButton {
+        background-color: #6FB234;
+    }
+      
+    .saveButton:hover {
+        background-color: #64a030;
+    }
+
+    .saveButton:disabled {
+        background-color: #6fb234b9;
+    }
+
+    .deleteButton {
+        background-color: #fd0101;
+    }
+      
+    .deleteButton:hover {
+        background-color: #b11717;
+    }
+
+    .deleteButton:disabled {
+        background-color: #fd01018f;
+    }
+}

@@ -1,0 +1,13 @@
+.paginationNext,
+.paginationPrevious {
+  display: flex;
+  align-items: center;
+  background-color: #0e497c !important;
+  color: white !important;
+  justify-content: center;
+  padding-top: 5px;
+}
+
+.paginationNext span, .paginationPrevious span{
+  font-size: 35px;
+}
