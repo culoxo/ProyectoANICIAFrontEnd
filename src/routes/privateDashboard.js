@@ -1,19 +1,17 @@
 
-import PrivateLayoutDashboard from 'views/common/layout/PrivateLayoutDashboard';
-import { ClientPage } from 'views/admin-users/ClientPage';
-import { ClientNew } from 'views/admin-users/ClientNewPage';
-import { ClientEditPage } from 'views/admin-users/ClientEditPage';
 import { UserCrumb } from 'components/shared/Breadcrumb/UserCrumb';
-import { ServPage } from 'views/admin-users/ServPage';
-import { UsersPage } from 'views/admin-users/UsersPage';
-import { UserNew} from 'views/admin-users/UsersNewPage';
-import { UsersEditPage} from 'views/admin-users/UsersEditPage';
-import { ServNew } from 'views/admin-users/ServNewPage';
-import { ServEdit } from 'views/admin-users/ServEditPage';
-import { FacturaPage } from 'views/admin-users/FacturaPage';
+import { ClientEditPage } from 'views/admin-users/ClientEditPage';
+import { ClientNew } from 'views/admin-users/ClientNewPage';
+import { ClientPage } from 'views/admin-users/ClientPage';
 import { FacturaInfoPage } from 'views/admin-users/FacturaInfoPage';
-import SideMenu from 'components/side-menu/SideMenu'; 
-import Login from '../views/admin-users/Login'
+import { FacturaPage } from 'views/admin-users/FacturaPage';
+import { ServEdit } from 'views/admin-users/ServEditPage';
+import { ServNew } from 'views/admin-users/ServNewPage';
+import { ServPage } from 'views/admin-users/ServPage';
+import { UsersEditPage } from 'views/admin-users/UsersEditPage';
+import { UserNew } from 'views/admin-users/UsersNewPage';
+import { UsersPage } from 'views/admin-users/UsersPage';
+import PrivateLayoutDashboard from 'views/common/layout/PrivateLayoutDashboard';
 
 const routes = {
   path: "/",

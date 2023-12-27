@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
 import { FormUsuario } from 'components/User';
-import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import { NotificationManager } from 'react-notifications';
-import { usePostUserMutation } from 'state/api/usuarioApi'
+import { useNavigate } from 'react-router-dom';
+import { usePostUserMutation } from 'state/api/usuarioApi';
 
 
 export const UserNew = () => {

@@ -251,6 +251,10 @@ p {
   display: flex;
 }
 
+.logo {
+  width: 220px; 
+  height: auto; /* mantiene la proporción original */
+}
 .text {
   display: flex;
 }
