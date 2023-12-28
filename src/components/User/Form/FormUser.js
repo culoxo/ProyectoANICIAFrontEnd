@@ -1,15 +1,10 @@
-import { FormInput } from "components/shared/Form/FormInput";
-import { FormSelect } from "components/shared/Form/FormSelect";
-import { method } from "lodash";
-import { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { Card, Table } from "reactstrap";
-import { resetClient } from "state/clientSlice";
-import { IoSaveOutline } from "react-icons/io5";
 import { Button } from "components/shared/Button";
-import { current } from "@reduxjs/toolkit";
-import { BrowserRouter as Router, Route, useLocation } from "react-router-dom";
+import { FormInput } from "components/shared/Form/FormInput";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { Card } from "reactstrap";
+import { resetClient } from "state/clientSlice";
 
 export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
   const dispatch = useDispatch();
@@ -72,13 +67,39 @@ export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
               register={methods.register("surname2")}
               type="text"
             />
+            </div>
+            <div className="row">
             <FormInput
-              className="col-md-5 mt-30"
+              className="col-md-5"
               name="email"
               label="Email"
               register={methods.register("email")}
               type="text"
             />
+            <FormInput
+              className="col-md-5"
+              name="password"
+              label="Contraseña"
+              register={methods.register("password")}
+              type="text"
+            />
+          </div>
+          <div className="row">
+            <FormInput
+              className="col-md-5"
+              name="preguntaSeg"
+              label="Pregunta"
+              register={methods.register("preguntaSeg")}
+              type="text"
+            />
+            <FormInput
+              className="col-md-5"
+              name="respuestaSeg"
+              label="Respuesta"
+              register={methods.register("respuestaSeg")}
+              type="text"
+            />
+          </div>
             <div className="col-md-4 d-flex align-items-center justify-content-center mt-30 h4">
               <label>Activo</label>
               <input
@@ -88,7 +109,6 @@ export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
                 {...methods.register("active")}
               />
             </div>
-          </div>
         </form>
           <div className="d-flex flex-column mt-30">
             <Button.Save onClick={methods.handleSubmit(onSubmitHandler)} />
