@@ -1,15 +1,10 @@
-import { FormInput } from "components/shared/Form/FormInput";
-import { FormSelect } from "components/shared/Form/FormSelect";
-import { method } from "lodash";
-import { useEffect, useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
-import { Card, Table } from "reactstrap";
-import { resetClient } from "state/clientSlice";
-import { IoSaveOutline } from "react-icons/io5";
 import { Button } from "components/shared/Button";
-import { current } from "@reduxjs/toolkit";
-import { BrowserRouter as Router, Route, useLocation } from "react-router-dom";
+import { FormInput } from "components/shared/Form/FormInput";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { Card } from "reactstrap";
+import { resetClient } from "state/clientSlice";
 
 export const FormClient = ({
   isEditing,
@@ -38,8 +33,6 @@ export const FormClient = ({
   const deleteHandler = () => {
     onDelete(currentClient.id);
   };
-
-  const isCreateNew = window.location.href.includes("/new");
 
   return (
     <>
@@ -91,7 +84,7 @@ export const FormClient = ({
           </form>
           <div className="d-flex flex-column mt-2">
             <Button.Save onClick={methods.handleSubmit(onSubmitHandler)} />
-            {!isCreateNew && <Button.Delete onClick={deleteHandler} />}
+            {isEditing && <Button.Delete onClick={deleteHandler}/>}
           </div>
         </div>
       </Card>

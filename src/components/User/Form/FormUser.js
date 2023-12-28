@@ -112,7 +112,7 @@ export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
         </form>
           <div className="d-flex flex-column mt-30">
             <Button.Save onClick={methods.handleSubmit(onSubmitHandler)} />
-            <Button.Delete onClick={handleDelete}/>
+            {isEditing && <Button.Delete onClick={handleDelete}/>}
           </div>
           </div>
       </Card>

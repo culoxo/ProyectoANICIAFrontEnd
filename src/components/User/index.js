@@ -1,7 +1,4 @@
-import { FormClient } from "./Form"
-import { FormServicios } from "./Form"
-import {FormUser} from "./Form"
-import {FormFactura} from "./Form"
+import { FormClient, FormFactura, FormRecuperaPass, FormServicios, FormUser } from "./Form";
 
 export const Client = {
   FormClient
@@ -17,4 +14,8 @@ export const FormUsuario = {
 
 export const Factura = {
   FormFactura
+};
+
+export const RecuperaPass = {
+  FormRecuperaPass
 };
