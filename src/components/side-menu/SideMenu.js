@@ -1,23 +1,15 @@
+import CasesIcon from "assets/dynamic-icons/CasesIcon";
+import HospitalIcon from "assets/dynamic-icons/HospitalIcon";
+import { useState } from "react";
 import {
   Nav,
-  NavItem,
-  Accordion,
-  AccordionBody,
-  AccordionItem,
-  AccordionHeader,
+  NavItem
 } from "reactstrap";
-import { useState } from "react";
 import styles from "./SideMenu.module.css";
-import CasesIcon from "assets/dynamic-icons/CasesIcon";
-import TrackingIcon from "assets/dynamic-icons/TrackingIcon";
-import PoblationalIcon from "assets/dynamic-icons/PoblationalIcon";
-import AdminIcon from "assets/dynamic-icons/AdminIcon";
-import HospitalIcon from "assets/dynamic-icons/HospitalIcon";
 
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { useSelector } from "react-redux";
 
-const SideMenu = ({ isOpen }) => {
+const SideMenu = ({ isOpen, usuarioRegistrado }) => {
   const [open, setOpen] = useState("");
   const [openSub, setOpenSub] = useState("");
 
@@ -96,6 +88,9 @@ const SideMenu = ({ isOpen }) => {
                     <span>Servicios</span>
                   </Link>
           </NavItem>
+
+{usuarioRegistrado && usuarioRegistrado.admin && (
+
           < NavItem className={styles.sideMenuItem}>
                   <CasesIcon
                     className={selectedSection === 2 ? styles.activeIcon : ""}
@@ -106,6 +101,9 @@ const SideMenu = ({ isOpen }) => {
                     <span>Usuarios</span>
                   </Link>
           </NavItem>
+          
+)}
+          
           < NavItem className={styles.sideMenuItem}>
                   <CasesIcon
                     className={selectedSection === 2 ? styles.activeIcon : ""}

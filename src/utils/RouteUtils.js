@@ -1,5 +1,5 @@
-import { useDispatch } from "react-redux";
-import { Route } from "react-router-dom";
+import React from 'react';
+import { Route } from 'react-router-dom';
 
 const routesBasedOnCodes = {
   CAS: "/casos",
@@ -15,22 +15,22 @@ const getInitialRouteFromMap = (moduleCode) => {
   return null;
 };
 
-export const GetRoutes = (route, key) => {
+export const GetRoutes = (route, key, usuarioRegistrado) => {
   const { component, path, crumb, linkToGoBack } = route;
 
   return (
     <Route
       key={key}
       path={path}
-      element={component}
+      element={React.cloneElement(component, { usuarioRegistrado })}
       handle={{
         ...(linkToGoBack ? { getNavigateUrl: () => linkToGoBack } : {}),
 
         ...(crumb ? { crumb: (params) => crumb(params) } : {}),
       }}
     >
-      {route.children?.map((route, key) => {
-        return GetRoutes(route, key);
+      {route.children?.map((childRoute, childKey) => {
+        return GetRoutes(childRoute, childKey, usuarioRegistrado);
       })}
     </Route>
   );

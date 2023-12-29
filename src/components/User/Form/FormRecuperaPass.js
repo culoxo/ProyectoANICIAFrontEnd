@@ -1,5 +1,4 @@
 import axios from 'axios'; // Asegúrate de importar axios
-import { FormInput } from "components/shared/Form/FormInput";
 import { useState } from 'react';
 
 export const FormRecuperaPass = ({ onBackToLogin }) => {
@@ -91,7 +90,7 @@ export const FormRecuperaPass = ({ onBackToLogin }) => {
           <br />
           <label>
             Respuesta de Seguridad:
-            <FormInput
+            <input
               type="text"
               value={securityAnswer}
               onChange={(e) => setSecurityAnswer(e.target.value)}

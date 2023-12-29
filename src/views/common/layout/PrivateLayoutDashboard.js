@@ -2,7 +2,7 @@ import SideMenu from "components/side-menu/SideMenu";
 import { Outlet } from "react-router-dom";
 import logoAnicia from '../../../assets/images/logoAnicia.png';
 
-const PrivateLayoutDashboard = () => {
+const PrivateLayoutDashboard = ({usuarioRegistrado}) => {
 
  // const isOpen = useSelector((state) => state.layout.sidebarIsOpen);
 
@@ -25,7 +25,7 @@ const logoContainerStyles = {
       <img src={logoAnicia} alt="Logo de la aplicación" className="logo" />
       </div>
       <div style={contentContainerStyles}>
-        <SideMenu isOpen={true}/>
+        <SideMenu isOpen={true} usuarioRegistrado={usuarioRegistrado}/>
         <Outlet />
       </div>
     </div>
