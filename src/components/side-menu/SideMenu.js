@@ -58,31 +58,14 @@ const SideMenu = ({ isOpen }) => {
       }}
     >
       <Nav vertical className={styles.sideMenu}>
-        <NavItem className={styles.sideMenuItem}>
-          <NavLink
-            href="#"
-            className={`d-flex align-items-center ${selectedSection === 1 && styles.activeSection
-              }`}
-            onClick={() => {
-              setSelectedSubSection();
-              setSelectedSection(1);
-            }}
-          >
-            <HospitalIcon
-              className={selectedSection === 1 && styles.activeIcon}
-              fill={isSideItemCurrentlyEnabled(selectedSection === 1)}
-              size="30"
-            />
-            <span className="ms-2 ">Inicio</span>
-          </NavLink>
-        </NavItem>
+        
           < NavItem className={styles.sideMenuItem}>
                   <CasesIcon
                     className={selectedSection === 2 ? styles.activeIcon : ""}
                     fill={selectedSection === 2 ? "#1D527E" : "white"}
                     size="30"
                   />
-                  <Link className = "ms-3"to="/clientes">
+                  <Link className = "ms-3 text-decoration-none"to="/clientes">
                     <span>Clientes</span>
                   </Link>
           </NavItem>
@@ -92,7 +75,7 @@ const SideMenu = ({ isOpen }) => {
                     fill={selectedSection === 2 ? "#1D527E" : "white"}
                     size="30"
                   />
-                  <Link className = "ms-3"to="/servicios">
+                  <Link className = "ms-3 text-decoration-none" to="/servicios">
                     <span>Servicios</span>
                   </Link>
           </NavItem>
@@ -102,7 +85,7 @@ const SideMenu = ({ isOpen }) => {
                     fill={selectedSection === 2 ? "#1D527E" : "white"}
                     size="30"
                   />
-                  <Link className = "ms-3"to="/usuarios">
+                  <Link className = "ms-3 text-decoration-none" to="/usuarios">
                     <span>Usuarios</span>
                   </Link>
           </NavItem>
@@ -112,7 +95,7 @@ const SideMenu = ({ isOpen }) => {
                     fill={selectedSection === 2 ? "#1D527E" : "white"}
                     size="30"
                   />
-                  <Link className = "ms-3"to="/factura">
+                  <Link className = "ms-3 text-decoration-none"to="/factura">
                     <span>Facturas</span>
                   </Link>
           </NavItem>

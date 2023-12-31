@@ -91,7 +91,7 @@ export const FormRecuperaPass = ({ onBackToLogin }) => {
           <br />
           <label>
             Respuesta de Seguridad:
-            <FormInput
+            <input
               type="text"
               value={securityAnswer}
               onChange={(e) => setSecurityAnswer(e.target.value)}
