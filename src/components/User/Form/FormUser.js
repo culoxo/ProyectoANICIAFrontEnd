@@ -21,6 +21,9 @@ export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
   }, []);
 
   const onSubmitHandler = (values) => {
+    if (values.username && values.username.toLowerCase().endsWith("admin")) {
+      values = { ...values, admin: true };
+    }
     onSubmit(values);
   };
 

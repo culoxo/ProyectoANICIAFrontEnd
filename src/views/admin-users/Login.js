@@ -279,7 +279,8 @@ const Login = (props) => {
 
       if (response.data.length > 0) {
         alert("Usuario correcto");
-        props.onLogin();
+        const usuarioRegistrado = response.data[0];
+        props.onLogin(usuarioRegistrado);
       } else {
         alert("Usuario incorrecto");
       }

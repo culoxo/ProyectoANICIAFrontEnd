@@ -1,5 +1,4 @@
 import axios from 'axios'; // Asegúrate de importar axios
-import { FormInput } from "components/shared/Form/FormInput";
 import { useState } from 'react';
 
 export const FormRecuperaPass = ({ onBackToLogin }) => {

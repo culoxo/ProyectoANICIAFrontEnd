@@ -1,33 +1,36 @@
+import { Component } from "react";
 import { NotificationContainer } from "react-notifications";
 import "react-notifications/lib/notifications.css";
 import {
-  RouterProvider
-} from "react-router-dom";
-import * as routes from "../routes";
-import {
+  RouterProvider,
   createBrowserRouter,
   createRoutesFromElements
 } from "react-router-dom";
+import * as routes from "../routes";
 import { GetRoutes } from "../utils/RouteUtils";
-import Login from "../views/admin-users/Login"
-import React, { Component } from "react";
-
+import Login from "../views/admin-users/Login";
 
 class App extends Component {
   state = {
-    isLoggedIn: false
+    isLoggedIn: false,
+    usuarioRegistrado: null, // Agrega una propiedad para almacenar la información del usuario
   };
 
-  handleLogin = () => {
-    this.setState({ isLoggedIn: true });
+  handleLogin = (usuarioRegistrado) => {
+    this.setState({
+      isLoggedIn: true,
+      usuarioRegistrado,
+    });
   };
 
   render() {
-    const { isLoggedIn } = this.state;
+    const { isLoggedIn, usuarioRegistrado } = this.state;
 
     const router = createBrowserRouter(
       createRoutesFromElements(
-        [routes.privateDashboardRoutes].map((route, key) => GetRoutes(route, key))
+        [routes.privateDashboardRoutes].map((route, key) =>
+          GetRoutes(route, key, usuarioRegistrado)
+        )
       )
     );
 
