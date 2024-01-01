@@ -16,7 +16,7 @@ const contentContainerStyles = {
   display: "flex",
   width: "100%",
 };
-
+console.log("Usuario Registrado:", usuarioRegistrado);
 const logoContainerStyles = {
 };
   return (

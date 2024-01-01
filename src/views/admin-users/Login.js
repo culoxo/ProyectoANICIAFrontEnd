@@ -251,6 +251,7 @@ import { NotificationManager } from 'react-notifications';
 import { usePostUserMutation } from 'state/api/usuarioApi';
 import logoAnicia from '../../assets/images/logoAnicia.png';
 import '../../styles.css';
+import { useGetUsersQuery } from "state/api/usuarioApi";
 
 const baseUrl = "http://localhost:9898/api/v1/usuarios";
 
@@ -263,7 +264,7 @@ const Login = (props) => {
   const [postUser, { data: newUserData, isSuccess: isPostUserSuccess, isLoading: isPostUserLoading }] = usePostUserMutation();
   const [showCreateUserForm, setShowCreateUserForm] = useState(false);
   const [showPasswordRecoveryForm, setShowPasswordRecoveryForm] = useState(false);
-
+  const { isLoading, data: userData, isError } = useGetUsersQuery();
   const handleChange = (e) => {
     setForm({
       ...form,
@@ -273,8 +274,9 @@ const Login = (props) => {
 
   const iniciarSesion = async () => {
     try {
+
       const response = await axios.get(baseUrl, {
-        params: { USERNAME: form.username, NAME: form.password },
+        params: { USERNAME: form.username, PASSWORD: form.password },
       });
 
       if (response.data.length > 0) {
@@ -311,6 +313,8 @@ const Login = (props) => {
 
   const postUserHandler = (formData) => {
     postUser(formData);
+
+
 };
 return (
   <div className="containerPrincipal">
@@ -346,7 +350,7 @@ return (
             Iniciar Sesión
           </button>
           <div className="my-2"></div> {/* Agregado espacio vertical */}
-          <button className="btn btn-link" onClick={recuperarContraseña}>
+          <button className="btn btn-outline-warning" onClick={recuperarContraseña}>
             Recuperar Contraseña
           </button>
           <div className="my-2"></div> {/* Agregado espacio vertical */}

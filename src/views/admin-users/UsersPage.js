@@ -59,7 +59,7 @@ export const UsersPage = () => {
   }
 
   const columns = [
-    { name: "id", label: "ID", type: "numeric" },
+
     { name: "username", label: "Usuario", type: "text" },
     { name: "name", label: "Nombre", type: "text" },
     { name: "surname", label: "Apellido", type: "text" },

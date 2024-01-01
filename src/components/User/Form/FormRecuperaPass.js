@@ -1,4 +1,4 @@
-import axios from 'axios'; // Asegúrate de importar axios
+import axios from 'axios';
 import { useState } from 'react';
 
 export const FormRecuperaPass = ({ onBackToLogin }) => {
@@ -14,6 +14,7 @@ export const FormRecuperaPass = ({ onBackToLogin }) => {
   };
 
   const baseUrl = "http://localhost:9898/api/v1/usuarios";
+
   const handleCheckUser = async (e) => {
     e.preventDefault();
     try {
@@ -23,7 +24,7 @@ export const FormRecuperaPass = ({ onBackToLogin }) => {
 
       if (response.data.length > 0) {
         alert("Usuario correcto");
-        setSecurityQuestion(response.data.preguntaSeg);
+        setSecurityQuestion(response.data[0].preguntaSeg);
         setShowPasswordField(true);
       } else {
         alert("Usuario incorrecto");
@@ -39,27 +40,31 @@ export const FormRecuperaPass = ({ onBackToLogin }) => {
       const response = await axios.get(baseUrl, {
         params: { USERNAME: username },
       });
-    // Verifica si la respuesta de seguridad coincide.
-    if (securityAnswer === response.data.respuestaSeg) {
-      const mockApiResponse = {
-        success: true,
-        password: response.data.password,
-      };
 
-      // Verifica si la respuesta del servidor es exitosa.
-      if (mockApiResponse.success) {
-        setPassword(mockApiResponse.password);
-        setMessage('Contraseña recuperada exitosamente.');
+      // Verifica si la respuesta de seguridad coincide.
+      if (securityAnswer === response.data[0].respuestaSeg) {
+        const mockApiResponse = {
+          success: true,
+          password: response.data[0].password,
+        };
+
+        // Verifica si la respuesta del servidor es exitosa.
+        if (mockApiResponse.success) {
+          setPassword(mockApiResponse.password);
+          setMessage('Tu contraseña  es: ' + mockApiResponse.password);
+        } else {
+          setMessage('Error. Verifica tu respuesta de seguridad.');
+        }
       } else {
-        setMessage('Error al recuperar la contraseña. Verifica tu respuesta de seguridad.');
+        setMessage('Respuesta de seguridad incorrecta. Verifica tu respuesta.');
+        // Limpiar el input y permitir que el usuario ingrese otra respuesta
+        setSecurityAnswer('');
       }
-    } else {
-      setMessage('Respuesta de seguridad incorrecta. Verifica tu respuesta.');
+    } catch (error) {
+      console.log(error);
     }
-  }catch (error) {
-    console.log(error);
   };
-  }
+
   return (
     <div>
       <h2>Recuperación de Contraseña</h2>
@@ -86,34 +91,35 @@ export const FormRecuperaPass = ({ onBackToLogin }) => {
       </form>
       {showPasswordField && (
         <form onSubmit={handleRecoverPassword}>
-          <label>Pregunta de Seguridad: {securityQuestion}</label>
-          <br />
-          <label>
-            Respuesta de Seguridad:
+          <div className="mb-3">
+            <label className="text-success">Responde a la siguiente pregunta de seguridad:</label>
+            <p className="mb-4 h4 font-weight-bold">{securityQuestion}</p>
+          </div>
+          <div className="mb-3 col-md-6 mx-auto">
+            
+            <label className="font-weight-bold">Respuesta de Seguridad:</label>
             <input
+              className="form-control form-control-sm border rounded"
               type="text"
               value={securityAnswer}
               onChange={(e) => setSecurityAnswer(e.target.value)}
               required
             />
-          </label>
-          <br />
-          <button type="submit" className="btn btn-success">
-            Recuperar Contraseña
-          </button>
+            {message && <p>{message}</p>}
+          </div>
+          <div className="row">
+            <div className="col-md-6 mx-auto">
+              <button type="submit" className="btn btn-success mb-2 mr-2">
+                Recuperar Contraseña
+              </button>
+              <button onClick={handleBackToLogin} className="btn btn-secondary">
+                Volver al Inicio de Sesión
+              </button>
+            </div>
+          </div>
         </form>
       )}
-      {message && <p>{message}</p>}
-      <div className="row">
-        <div className="col-md-6 mx-auto">
-          <button onClick={handleBackToLogin} className="btn btn-secondary mb-6">
-            Volver al Inicio de Sesión
-          </button>
-        </div>
-      </div>
-      {password && <p>Tu contraseña recuperada es: {password}</p>}
+      
     </div>
   );
-  
 };
-

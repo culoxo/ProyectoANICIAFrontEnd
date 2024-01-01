@@ -1,5 +1,4 @@
 import CasesIcon from "assets/dynamic-icons/CasesIcon";
-import HospitalIcon from "assets/dynamic-icons/HospitalIcon";
 import { useState } from "react";
 import {
   Nav,
