@@ -84,7 +84,7 @@ export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
               name="password"
               label="Contraseña"
               register={methods.register("password")}
-              type="text"
+              type="password"
             />
           </div>
           <div className="row">
