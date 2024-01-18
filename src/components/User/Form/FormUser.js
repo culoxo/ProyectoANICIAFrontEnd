@@ -1,14 +1,17 @@
+import React, { useEffect, useState } from 'react';
 import { Button } from "components/shared/Button";
 import { FormInput } from "components/shared/Form/FormInput";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Card } from "reactstrap";
 import { resetClient } from "state/clientSlice";
+import PrivacyPolicyModal from "../../shared/privacidad";
 
 export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
   const dispatch = useDispatch();
   const methods = useForm({ defaultValues: currentUser });
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const [isSaveButtonEnabled, setIsSaveButtonEnabled] = useState(false);
 
   useEffect(() => {
     if (currentUser) {
@@ -20,8 +23,25 @@ export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
     return () => dispatch(resetClient());
   }, []);
 
+  useEffect(() => {
+    // Verificar si los campos requeridos tienen algún valor
+    const requiredFields = [
+      "username",
+      "name",
+      "surname",
+      "surname2",
+      "email",
+      "password",
+      "preguntaSeg",
+      "respuestaSeg",
+    ];
+
+    const allFieldsFilled = requiredFields.every(field => !!methods.getValues(field));
+    setIsSaveButtonEnabled(allFieldsFilled);
+  }, [methods.watch()]); // Agregar watch() para rastrear cambios en los valores de los campos
+
   const onSubmitHandler = (values) => {
-    if (values.username && values.username.toLowerCase().endsWith("admin")) {
+    if (values.passwordAdmin === "anicia") {
       values = { ...values, admin: true };
     }
     onSubmit(values);
@@ -31,6 +51,13 @@ export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
     onDelete(currentUser.id);
   };
 
+  const handlePrivacyPolicyClick = () => {
+    setShowPrivacyPolicy(true);
+  };
+
+  const closePrivacyPolicyModal = () => {
+    setShowPrivacyPolicy(false);
+  };
   return (
     <>
       <Card className=" row p-4 mt-3">
@@ -70,8 +97,8 @@ export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
               register={methods.register("surname2")}
               type="text"
             />
-            </div>
-            <div className="row">
+          </div>
+          <div className="row">
             <FormInput
               className="col-md-5"
               name="email"
@@ -100,25 +127,50 @@ export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
               name="respuestaSeg"
               label="Respuesta"
               register={methods.register("respuestaSeg")}
+              type="password"
+            />
+            <label style={{ color: 'red'}}>
+              * Todos los campos anteriores son obligatorios
+            </label>
+            <label style={{ color: 'red'}}>
+              Al crear su usuario, acepta la{' '}
+              <span
+                style={{ color: 'blue', cursor: 'pointer' }}
+                onClick={handlePrivacyPolicyClick}
+              >
+                política de privacidad
+              </span>
+            </label>
+          </div>
+          <div className="row">
+            <FormInput
+              className="col-md-5"
+              name="passwordAdmin"
+              label="Password Admin"
               type="text"
             />
-          </div>
             <div className="col-md-4 d-flex align-items-center justify-content-center mt-30 h4">
               <label>Activo</label>
               <input
                 type="checkbox"
-                className="col-md-2 "
+                className="col-md-4 "
                 name="active"
                 {...methods.register("active")}
               />
             </div>
+          </div>
         </form>
-          <div className="d-flex flex-column mt-30">
-            <Button.Save onClick={methods.handleSubmit(onSubmitHandler)} />
-            {isEditing && <Button.Delete onClick={handleDelete}/>}
-          </div>
-          </div>
+        <div className="d-flex flex-column mt-30">
+        <Button.Save onClick={methods.handleSubmit(onSubmitHandler)} disabled={!isSaveButtonEnabled} />
+          {isEditing && <Button.Delete onClick={handleDelete}/>}
+        </div>
+      </div>
       </Card>
+
+      {/* Agregar el componente de la política de privacidad */}
+      {showPrivacyPolicy && (
+        <PrivacyPolicyModal onClose={closePrivacyPolicyModal} />
+      )}
     </>
   );
 };

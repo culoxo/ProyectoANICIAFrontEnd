@@ -8,6 +8,7 @@ import { Button } from 'reactstrap';
 
 
 export const ClientPage = () => {
+  
     const { searchCriteria, pageIndex, pageSize, sort, sortBy } = useSelector(state => state.client);
     const { isLoading, data: clientData, isError } = useGetClientsQuery(
         { searchCriteria: encodeURI(JSON.stringify({ searchCriteria })), sort, sortBy, pageIndex, pageSize });
@@ -20,6 +21,18 @@ export const ClientPage = () => {
         { name: "email", label: "Email", type: "text" },
         { name: "telefono", label: "Telefono", type: "text" },
         { name: "active", label: "Activo", type: "custom", customType: (value) => value ? "Sí" : "No" },
+        {
+            name: "servicios",
+            label: "Servicios contratados",
+            type: "custom",
+            customType: (value) => {
+              if (Array.isArray(value) && value.length > 0) {
+                return value.map((servicio) => servicio.nombre).join(", ");
+              } else {
+                return ""; // O cualquier valor por defecto si el array está vacío o no existe
+              }
+            },
+        }
     ]
 
     useEffect(() => {

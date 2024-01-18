@@ -1,10 +1,12 @@
+import React, { useEffect, useState } from 'react';
 import { Button } from "components/shared/Button";
 import { FormInput } from "components/shared/Form/FormInput";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Card } from "reactstrap";
 import { resetClient } from "state/clientSlice";
+
+// ... (importaciones y otros códigos)
 
 export const FormClient = ({
   isEditing,
@@ -13,8 +15,8 @@ export const FormClient = ({
   onDelete,
 }) => {
   const dispatch = useDispatch();
-  console.log(currentClient);
   const methods = useForm({ defaultValues: currentClient });
+  const [isSaveButtonEnabled, setIsSaveButtonEnabled] = useState(false);
 
   useEffect(() => {
     if (currentClient) {
@@ -24,15 +26,52 @@ export const FormClient = ({
     }
 
     return () => dispatch(resetClient());
-  }, []);
+  }, [currentClient, dispatch, methods]);
+
+  useEffect(() => {
+    // Verificar si los campos requeridos tienen algún valor
+    console.log("Verificando número de teléfono...");
+    const requiredFields = ["nombre", "direccion", "email", "telefono"];
+    const allFieldsFilled = requiredFields.every(
+      (field) => !!methods.getValues(field)
+    );
+
+    // Verificar el número de teléfono
+    const telefonoValue = methods.getValues("telefono");
+    const isTelefonoValid =
+      (telefonoValue.startsWith("6") || telefonoValue.startsWith("9")) &&
+      telefonoValue.length === 9;
+
+    setIsSaveButtonEnabled(allFieldsFilled && isTelefonoValid);
+    console.log("isSaveButtonEnabled:", isSaveButtonEnabled);
+
+  }, [methods.watch()]);
 
   const onSubmitHandler = (values) => {
     onSubmit(values);
   };
 
   const deleteHandler = () => {
-    onDelete(currentClient.id);
+    onDelete(currentClient?.id);
   };
+
+  const handleTelefonoChange = () => {
+    const telefonoValue = methods.getValues("telefono");
+    console.log("Valor del teléfono:", telefonoValue);
+    // Mejora la lógica de validación con expresiones regulares
+    const isTelefonoValid = /^[69]\d{8}$/.test(telefonoValue);
+  
+    setIsSaveButtonEnabled(isTelefonoValid);
+  
+    if (!isTelefonoValid) {
+      alert("Número de teléfono incorrecto");
+      console.log("Número de teléfono incorrecto");
+    }
+  };
+  
+  
+
+  const showServiciosSection = currentClient && currentClient.servicios;
 
   return (
     <>
@@ -57,6 +96,8 @@ export const FormClient = ({
                 register={methods.register("direccion")}
                 type="text"
               />
+            </div>
+            <div className="row">
               <FormInput
                 className="col-md-4"
                 name="email"
@@ -70,21 +111,42 @@ export const FormClient = ({
                 label="Teléfono"
                 register={methods.register("telefono")}
                 type="text"
+                onBlur={handleTelefonoChange}
               />
-              <div className="col-md-4 d-flex align-items-center justify-content-center h4">
-                <label>Activo</label>
-                <input
-                  type="checkbox"
-                  className="col-md-2 "
-                  name="active"
-                  {...methods.register("active")}
-                />
-              </div>
+              <label style={{ color: "red" }}>
+                * Todos los campos anteriores son obligatorios
+              </label>
             </div>
+            {showServiciosSection && (
+              <div className="row">
+                <div className="col-md-4">
+                  <label style={{ color: "green" }}>Servicios Contratados: </label>
+                  {currentClient.servicios.map((servicio, index) => (
+                    <div key={index}>+{servicio.nombre}</div>
+                  ))}
+                </div>
+              </div>
+            )}
+            {showServiciosSection && (
+              <div className="row">
+                <div className="col-md-4 d-flex align-items-center justify-content-center h4">
+                  <label>Activo</label>
+                  <input
+                    type="checkbox"
+                    className="col-md-2 "
+                    name="active"
+                    {...methods.register("active")}
+                  />
+                </div>
+              </div>
+            )}
           </form>
           <div className="d-flex flex-column mt-2">
-            <Button.Save onClick={methods.handleSubmit(onSubmitHandler)} />
-            {isEditing && <Button.Delete onClick={deleteHandler}/>}
+            <Button.Save
+              onClick={methods.handleSubmit(onSubmitHandler)}
+              disabled={!isSaveButtonEnabled}
+            />
+            {isEditing && <Button.Delete onClick={deleteHandler} />}
           </div>
         </div>
       </Card>

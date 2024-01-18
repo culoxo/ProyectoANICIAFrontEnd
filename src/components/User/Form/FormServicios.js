@@ -1,6 +1,6 @@
+import React, { useEffect, useState } from 'react';
 import { Button } from "components/shared/Button";
 import { FormInput } from "components/shared/Form/FormInput";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Card } from "reactstrap";
@@ -14,6 +14,7 @@ export const FormServicios = ({
 }) => {
   const dispatch = useDispatch();
   const methods = useForm({ defaultValues: currentServ });
+  const [isSaveButtonEnabled, setIsSaveButtonEnabled] = useState(false);
 
   useEffect(() => {
     if (currentServ) {
@@ -23,7 +24,16 @@ export const FormServicios = ({
     }
 
     return () => dispatch(resetClient());
-  }, []);
+  }, [currentServ, dispatch, methods]);
+
+  useEffect(() => {
+    // Verificar si los campos requeridos tienen algún valor
+    const requiredFields = ["nombre"];
+    const allFieldsFilled = requiredFields.every(
+      (field) => !!methods.getValues(field)
+    );
+    setIsSaveButtonEnabled(allFieldsFilled);
+  }, [methods.watch()]);
 
   const onSubmitHandler = (values) => {
     onSubmit(values);
@@ -49,22 +59,25 @@ export const FormServicios = ({
               register={methods.register("nombre")}
               type="text"
             />
-                <div className="col-md-4 d-flex align-items-center justify-content-center h4">
-                    <label >Activo</label>
-                    <input 
-                        type="checkbox"
-                        className="col-md-2 "
-                        name="active"
-                        {...methods.register("active")}
-                    />
+            <div className="col-md-4 d-flex align-items-center justify-content-center h4">
+              <label>Activo</label>
+              <input
+                type="checkbox"
+                className="col-md-2 "
+                name="active"
+                {...methods.register("active")}
+              />
             </div>
           </div>
         </form>
-          <div className="d-flex flex-column">
-            <Button.Save onClick={methods.handleSubmit(onSubmitHandler)} />
-            {isEditing && <Button.Delete onClick={handleDelete}/>}
-          </div>
+        <div className="d-flex flex-column">
+          <Button.Save
+            onClick={methods.handleSubmit(onSubmitHandler)}
+            disabled={!isSaveButtonEnabled}
+          />
+          {isEditing && <Button.Delete onClick={handleDelete}/>}
         </div>
+      </div>
       </Card>
     </>
   );
