@@ -3,6 +3,8 @@ import { useEffect } from "react";
 import { NotificationManager } from "react-notifications";
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetClientQuery, useUpdateClientMutation, useDeleteClientMutation } from "state/api/clientApi";
+import {useGetServsQuery} from "state/api/servicioApi"
+
 
 export const ClientEditPage = () => {
 
@@ -11,8 +13,8 @@ export const ClientEditPage = () => {
     const { data: currentClient, isLoading: isGetClientLoading } = useGetClientQuery(String(clientId));
     const [updateClient, { isSuccess: isUpdateClientSuccess, isLoading: isUpdateClientLoading }] = useUpdateClientMutation();
     const [deleteClient] = useDeleteClientMutation();
-
-    // When user update is successful, user is notificated and redireceted to principal page
+    const { isLoading, data: servData, isError } = useGetServsQuery();
+    
 
     useEffect(() => {
         if (isUpdateClientSuccess) {

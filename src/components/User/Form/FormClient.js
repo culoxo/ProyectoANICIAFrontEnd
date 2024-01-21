@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import { Button } from "components/shared/Button";
 import { FormInput } from "components/shared/Form/FormInput";
@@ -5,8 +6,7 @@ import { useForm } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { Card } from "reactstrap";
 import { resetClient } from "state/clientSlice";
-
-// ... (importaciones y otros códigos)
+import { useGetServsQuery } from "state/api/servicioApi";
 
 export const FormClient = ({
   isEditing,
@@ -17,6 +17,8 @@ export const FormClient = ({
   const dispatch = useDispatch();
   const methods = useForm({ defaultValues: currentClient });
   const [isSaveButtonEnabled, setIsSaveButtonEnabled] = useState(false);
+  const { isLoading, data: servData, isError } = useGetServsQuery();
+  const [selectedService, setSelectedService] = useState(null);
 
   useEffect(() => {
     if (currentClient) {
@@ -30,7 +32,6 @@ export const FormClient = ({
 
   useEffect(() => {
     // Verificar si los campos requeridos tienen algún valor
-    console.log("Verificando número de teléfono...");
     const requiredFields = ["nombre", "direccion", "email", "telefono"];
     const allFieldsFilled = requiredFields.every(
       (field) => !!methods.getValues(field)
@@ -43,13 +44,28 @@ export const FormClient = ({
       telefonoValue.length === 9;
 
     setIsSaveButtonEnabled(allFieldsFilled && isTelefonoValid);
-    console.log("isSaveButtonEnabled:", isSaveButtonEnabled);
 
   }, [methods.watch()]);
 
   const onSubmitHandler = (values) => {
-    onSubmit(values);
+    // Construye el objeto con la lista actualizada de servicios
+    const selectedServiceObject = selectedService
+      ? { servicioId: selectedService.id, nombre: selectedService.nombre, deleted: false, active: true }
+      : null;
+  
+    const updatedServicios = selectedServiceObject
+      ? [...(values.servicios || []), selectedServiceObject]
+      : (values.servicios || []);
+  
+    const valuesWithService = {
+      ...values,
+      servicios: updatedServicios,
+    };
+  
+    onSubmit(valuesWithService);
   };
+  
+  
 
   const deleteHandler = () => {
     onDelete(currentClient?.id);
@@ -57,19 +73,14 @@ export const FormClient = ({
 
   const handleTelefonoChange = () => {
     const telefonoValue = methods.getValues("telefono");
-    console.log("Valor del teléfono:", telefonoValue);
-    // Mejora la lógica de validación con expresiones regulares
     const isTelefonoValid = /^[69]\d{8}$/.test(telefonoValue);
-  
+
     setIsSaveButtonEnabled(isTelefonoValid);
-  
+
     if (!isTelefonoValid) {
       alert("Número de teléfono incorrecto");
-      console.log("Número de teléfono incorrecto");
     }
   };
-  
-  
 
   const showServiciosSection = currentClient && currentClient.servicios;
 
@@ -113,9 +124,34 @@ export const FormClient = ({
                 type="text"
                 onBlur={handleTelefonoChange}
               />
-              <label style={{ color: "red" }}>
-                * Todos los campos anteriores son obligatorios
-              </label>
+
+<div className="col-md-4">
+  <label htmlFor="servicio">¿Quieres añadir un nuevo servicio?</label>
+  <select
+    className="form-control"
+    name="servicios"
+    onChange={(e) => {
+      const selectedId = e.target.value;
+      const selectedService = servData.find((servicio) => servicio.id === parseInt(selectedId, 10));
+      console.log("Servicio seleccionado:", selectedService);
+      setSelectedService(selectedService);
+    }}
+    value={selectedService ? selectedService.id : ""}
+  >
+    <option value="" disabled>
+      Seleccione un servicio
+    </option>
+    {servData &&
+      servData.map((servicio) => (
+        <option key={servicio.id} value={String(servicio.id)}>
+          {servicio.nombre}
+        </option>
+      ))}
+  </select>
+</div>
+
+
+
             </div>
             {showServiciosSection && (
               <div className="row">
@@ -142,10 +178,18 @@ export const FormClient = ({
             )}
           </form>
           <div className="d-flex flex-column mt-2">
-            <Button.Save
-              onClick={methods.handleSubmit(onSubmitHandler)}
-              disabled={!isSaveButtonEnabled}
-            />
+          
+          <Button.Save
+  onClick={methods.handleSubmit(() => {
+    const formData = methods.getValues();
+    console.log("Datos del formulario:", formData);
+    console.log("Servicio seleccionado:", selectedService);
+    onSubmitHandler(formData);
+  })}
+  disabled={!isSaveButtonEnabled}
+/>
+
+
             {isEditing && <Button.Delete onClick={deleteHandler} />}
           </div>
         </div>
