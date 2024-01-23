@@ -133,11 +133,9 @@ export const FormClient = ({
     onChange={(e) => {
       const selectedId = e.target.value;
       const selectedService = servData.find((servicio) => servicio.id === parseInt(selectedId, 10));
-      console.log("Servicio seleccionado:", selectedService);
       setSelectedService(selectedService);
     }}
-    value={selectedService ? selectedService.id : ""}
-  >
+    value={selectedService ? selectedService.id : ""}>
     <option value="" disabled>
       Seleccione un servicio
     </option>
@@ -149,9 +147,6 @@ export const FormClient = ({
       ))}
   </select>
 </div>
-
-
-
             </div>
             {showServiciosSection && (
               <div className="row">
@@ -182,8 +177,6 @@ export const FormClient = ({
           <Button.Save
   onClick={methods.handleSubmit(() => {
     const formData = methods.getValues();
-    console.log("Datos del formulario:", formData);
-    console.log("Servicio seleccionado:", selectedService);
     onSubmitHandler(formData);
   })}
   disabled={!isSaveButtonEnabled}

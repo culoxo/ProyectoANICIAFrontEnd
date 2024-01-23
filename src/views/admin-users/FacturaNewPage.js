@@ -32,7 +32,7 @@ export const FacturaNew = () => {
 
     return (
         <div className='pageContainer'>
-            <Factura.FormClient isEditing={false} onSubmit={postClientHandler}  />
+            <Factura.FormFactura isEditing={false} onSubmit={postClientHandler}  />
         </div>
     );
 }

@@ -14,7 +14,7 @@ export const FormFactura = ({
 }) => {
   const dispatch = useDispatch();
   const methods = useForm({ defaultValues: currentFactura });
-  const [isSaveButtonEnabled, setIsSaveButtonEnabled] = useState(false);
+  //const [isSaveButtonEnabled, setIsSaveButtonEnabled] = useState(false);
 
   useEffect(() => {
     if (currentFactura) {
@@ -26,14 +26,14 @@ export const FormFactura = ({
     return () => dispatch(resetClient());
   }, [currentFactura, dispatch, methods]);
 
-  useEffect(() => {
+  //useEffect(() => {
     // Verificar si los campos requeridos tienen algún valor
-    const requiredFields = ["id"];
-    const allFieldsFilled = requiredFields.every(
-      (field) => !!methods.getValues(field)
-    );
-    setIsSaveButtonEnabled(allFieldsFilled);
-  }, [methods]);
+  //  const requiredFields = ["id"];
+  //  const allFieldsFilled = requiredFields.every(
+   //   (field) => !!methods.getValues(field)
+  //  );
+  //  setIsSaveButtonEnabled(allFieldsFilled);
+ // }, [methods]);
 
   const onSubmitHandler = (values) => {
     onSubmit(values);
@@ -76,7 +76,7 @@ export const FormFactura = ({
           <div className="d-flex flex-column mt-2">
             <Button.Save
               onClick={methods.handleSubmit(onSubmitHandler)}
-              disabled={!isSaveButtonEnabled}
+          //    disabled={!isSaveButtonEnabled}
             />
             {!isCreateNew && <Button.Delete onClick={deleteHandler} />}
           </div>

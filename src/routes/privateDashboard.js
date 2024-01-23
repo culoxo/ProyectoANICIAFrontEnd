@@ -5,6 +5,7 @@ import { ClientNew } from 'views/admin-users/ClientNewPage';
 import { ClientPage } from 'views/admin-users/ClientPage';
 import { FacturaInfoPage } from 'views/admin-users/FacturaInfoPage';
 import { FacturaPage } from 'views/admin-users/FacturaPage';
+import { FacturaNew } from 'views/admin-users/FacturaNewPage';
 import { ServEdit } from 'views/admin-users/ServEditPage';
 import { ServNew } from 'views/admin-users/ServNewPage';
 import { ServPage } from 'views/admin-users/ServPage';
@@ -55,6 +56,11 @@ const routes = {
       crumb: () => <span>Factura</span>,
       component: <FacturaPage />,
       children: [
+        {
+          path: "/factura/new",
+          crumb: () => <span>Nueva Factura</span>,
+          component: <FacturaNew />
+        },
       {
         path: "/factura/:facturaId",
         crumb: () => <UserCrumb />,
