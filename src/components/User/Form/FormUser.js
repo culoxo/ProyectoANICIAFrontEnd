@@ -41,9 +41,6 @@ export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
   }, [methods.watch()]); // Agregar watch() para rastrear cambios en los valores de los campos
 
   const onSubmitHandler = (values) => {
-    if (values.passwordAdmin === "anicia") {
-      values = { ...values, admin: true };
-    }
     onSubmit(values);
   };
 
@@ -143,12 +140,25 @@ export const FormUser = ({ isEditing, currentUser, onSubmit, onDelete }) => {
             </label>
           </div>
           <div className="row">
-            <FormInput
-              className="col-md-5"
-              name="passwordAdmin"
-              label="Password Admin"
-              type="text"
-            />
+          <FormInput
+  className="col-md-5"
+  name="passwordAdmin"
+  label="Password Admin"
+  type="password"
+  onBlur={(e) => {
+    const passwordAdminValue = e.target.value;
+
+    if (passwordAdminValue && passwordAdminValue.toLowerCase() === "anicia") {
+      // Opción 1: Cambiar el valor de admin directamente
+      methods.setValue("admin", true);
+
+      console.log("El contenido de passwordAdmin es 'anicia' al perder el foco.");
+    } else {
+      // Opción 1: Si el campo está vacío, cambiar el valor de admin a false
+      methods.setValue("admin", false);
+    }
+  }}
+/>
             <div className="col-md-4 d-flex align-items-center justify-content-center mt-30 h4">
               <label>Activo</label>
               <input
